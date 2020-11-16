@@ -3,16 +3,20 @@ package tech.paexp.tank;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TankFrame extends Frame {
+    public static final TankFrame INSTANCE = new TankFrame();
+
     private Tank myTank;
     private Tank enemy;
 
-    private Bullet bullet;
+    private List<Bullet> bullets;
 
     public static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
 
-    public TankFrame() {
+    private TankFrame() {
         this.setTitle("tank war");
         this.setLocation(400, 100);
         this.setSize(GAME_WIDTH, GAME_HEIGHT);
@@ -20,22 +24,29 @@ public class TankFrame extends Frame {
         // 添加键盘(key)监听器
         this.addKeyListener(new TankKeyListener());
 
-        myTank = new Tank(100, 100, Dir.R, Group.GOOD, this);
-        enemy = new Tank(200, 200, Dir.D, Group.BAD, this);
+        myTank = new Tank(100, 100, Dir.R, Group.GOOD);
+        enemy = new Tank(200, 200, Dir.D, Group.BAD);
 
-        bullet = new Bullet(100, 100, Dir.D, Group.BAD);
+        bullets = new ArrayList<>();
     }
 
     public void add(Bullet bullet) {
-        this.bullet = bullet;
+        this.bullets.add(bullet);
     }
 
     @Override
     public void paint(Graphics g) {
         // g由系统初始化，可以直接拿来用 --> 一只画笔
+        Color c = g.getColor();
+        g.setColor(Color.WHITE);
+        g.drawString("Bullets:" + bullets.size(), 10, 50);
+        g.setColor(c);
+
         myTank.paint(g);
         enemy.paint(g);
-        bullet.paint(g);
+        for (Bullet bullet : bullets) {
+            bullet.paint(g);
+        }
     }
 
     // 闪烁过快，使用双缓冲

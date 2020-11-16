@@ -7,22 +7,18 @@ import java.awt.event.KeyEvent;
  * @author expev
  */
 public class Tank {
+    public static final int SPEED = 5;
     private int x, y;
     private Dir dir;
     private boolean bL, bU, bR, bD;
     private boolean moving = false;
     private Group group;
 
-    TankFrame tf;
-
-    public static final int SPEED = 5;
-
-    public Tank(int x, int y, Dir dir, Group group, TankFrame tf) {
+    public Tank(int x, int y, Dir dir, Group group) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.group = group;
-        this.tf = tf;
     }
 
     public void paint(Graphics g) {
@@ -151,6 +147,6 @@ public class Tank {
     }
 
     private void fire() {
-        tf.add(new Bullet(x, y, dir, group));
+        TankFrame.INSTANCE.add(new Bullet(x, y, dir, group));
     }
 }

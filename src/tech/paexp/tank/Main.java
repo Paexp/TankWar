@@ -2,9 +2,7 @@ package tech.paexp.tank;
 
 public class Main {
     public static void main(String[] args) {
-        TankFrame tf = new TankFrame();
-
-        tf.setVisible(true);
+        TankFrame.INSTANCE.setVisible(true);
 
         for (; ; ) {
             try {
@@ -14,7 +12,7 @@ public class Main {
             }
 
             // 调用过程：repaint --> update --> paint
-            tf.repaint();
+            TankFrame.INSTANCE.repaint();
         }
     }
 }

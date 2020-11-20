@@ -30,6 +30,8 @@ public class Bullet {
             case D:
                 g.drawImage(ResourceMgr.bulletD, x, y, null);
                 break;
+            default:
+                break;
         }
 
         move();
@@ -49,15 +51,37 @@ public class Bullet {
             case D:
                 y += SPEED;
                 break;
+            default:
+                break;
         }
 
         boundsCheck();
     }
 
+    public void collidesWithTank(Tank tank) {
+        if (!tank.isLive()) {
+            return;
+        }
+
+        Rectangle rectBullet = new Rectangle(x, y, ResourceMgr.bulletU.getWidth(),
+                ResourceMgr.badTankU.getHeight());
+        Rectangle rectTank = new Rectangle(tank.getX(), tank.getY(), ResourceMgr.goodTankU.getWidth(),
+                ResourceMgr.goodTankU.getHeight());
+        if (rectBullet.intersects(rectTank)) {
+            this.die();
+            tank.die();
+        }
+    }
+
+
     private void boundsCheck() {
         if (x < 0 || y < 30 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT) {
             live = false;
         }
+    }
+
+    public void die(){
+        this.setLive(false);
     }
 
     public boolean isLive() {

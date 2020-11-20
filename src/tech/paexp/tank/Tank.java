@@ -36,6 +36,8 @@ public class Tank {
                 case D:
                     g.drawImage(ResourceMgr.goodTankD, x, y, null);
                     break;
+                default:
+                    break;
             }
         }
 
@@ -53,9 +55,10 @@ public class Tank {
                 case D:
                     g.drawImage(ResourceMgr.badTankD, x, y, null);
                     break;
+                default:
+                    break;
             }
         }
-
 
         move();
     }
@@ -75,6 +78,8 @@ public class Tank {
                 break;
             case KeyEvent.VK_DOWN:
                 bD = true;
+                break;
+            default:
                 break;
         }
         setMainDir();
@@ -120,6 +125,8 @@ public class Tank {
             case D:
                 y += SPEED;
                 break;
+            default:
+                break;
         }
     }
 
@@ -141,12 +148,16 @@ public class Tank {
             case KeyEvent.VK_CONTROL:
                 fire();
                 break;
+            default:
+                break;
         }
 
         setMainDir();
     }
 
     private void fire() {
-        TankFrame.INSTANCE.add(new Bullet(x, y, dir, group));
+        int bX = x + ResourceMgr.goodTankU.getWidth() / 2 - ResourceMgr.bulletU.getWidth() / 2;
+        int bY = y + ResourceMgr.goodTankU.getHeight() / 2 - ResourceMgr.bulletU.getHeight() / 2;
+        TankFrame.INSTANCE.add(new Bullet(bX, bY, dir, group));
     }
 }

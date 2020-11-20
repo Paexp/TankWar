@@ -3,10 +3,11 @@ package tech.paexp.tank;
 import java.awt.*;
 
 public class Bullet {
+    public static final int SPEED = 6;
     private int x, y;
     private Dir dir;
     private Group group;
-    public static final int SPEED = 6;
+    private boolean live = true;
 
     public Bullet(int x, int y, Dir dir, Group group) {
         this.x = x;
@@ -49,5 +50,21 @@ public class Bullet {
                 y += SPEED;
                 break;
         }
+
+        boundsCheck();
+    }
+
+    private void boundsCheck() {
+        if (x < 0 || y < 30 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT) {
+            live = false;
+        }
+    }
+
+    public boolean isLive() {
+        return live;
+    }
+
+    public void setLive(boolean live) {
+        this.live = live;
     }
 }

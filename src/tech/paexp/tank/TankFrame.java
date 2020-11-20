@@ -44,8 +44,13 @@ public class TankFrame extends Frame {
 
         myTank.paint(g);
         enemy.paint(g);
-        for (Bullet bullet : bullets) {
-            bullet.paint(g);
+
+        for (int i = 0; i < bullets.size(); i++) {
+            if (!bullets.get(i).isLive()) {
+                bullets.remove(i);
+            } else {
+                bullets.get(i).paint(g);
+            }
         }
     }
 

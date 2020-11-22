@@ -14,9 +14,7 @@ public class TankFrame extends Frame {
 
     private Player myTank;
 
-    private List<Explode> explodes;
-    private List<Bullet> bullets;
-    private List<Tank> tanks;
+    List<AbstractGameObject> objects;
 
     public static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
 
@@ -27,7 +25,6 @@ public class TankFrame extends Frame {
 
         // 添加键盘(key)监听器
         this.addKeyListener(new TankKeyListener());
-
         initGameObject();
 
     }
@@ -35,59 +32,64 @@ public class TankFrame extends Frame {
     private void initGameObject() {
         myTank = new Player(100, 100, Dir.R, Group.GOOD);
 
-        bullets = new ArrayList<>();
-        tanks = new ArrayList<>();
-        explodes = new ArrayList<>();
+        objects = new ArrayList<>();
 
         int tankCount = Integer.parseInt(PropertyMgr.get("initTankCount"));
 
         for (int i = 0; i < tankCount; i++) {
-            tanks.add(new Tank(100 + 50 * i, 200, Dir.D, Group.BAD));
+            this.add(new Tank(100 + 50 * i, 200, Dir.D, Group.BAD));
         }
+
+        this.add(new Wall(300, 200, 400, 50));
     }
 
-    public void add(Bullet bullet) {
-        this.bullets.add(bullet);
+    public void add(AbstractGameObject go) {
+        //impl?
+        objects.add(go);
     }
+
 
     @Override
     public void paint(Graphics g) {
         // g由系统初始化，可以直接拿来用 --> 一只画笔
         Color c = g.getColor();
         g.setColor(Color.WHITE);
-        g.drawString("Bullets:" + bullets.size(), 10, 50);
-        g.drawString("enemies:" + tanks.size(), 10, 70);
-        g.drawString("explodes:" + explodes.size(), 10, 90);
+//        g.drawString("Bullets:" + bullets.size(), 10, 50);
+//        g.drawString("enemies:" + tanks.size(), 10, 70);
+//        g.drawString("explodes:" + explodes.size(), 10, 90);
         g.setColor(c);
 
         myTank.paint(g);
-        for (int i = 0; i < tanks.size(); i++) {
-            if (!tanks.get(i).isLive()) {
-                tanks.remove(i);
-            } else {
-                tanks.get(i).paint(g);
-            }
+        for (int i = 0; i < objects.size(); i++) {
+            objects.get(i).paint(g);
         }
-
-        for (int i = 0; i < bullets.size(); i++) {
-            for (int j = 0; j < tanks.size(); j++) {
-                bullets.get(i).collidesWithTank(tanks.get(j));
-            }
-
-            if (!bullets.get(i).isLive()) {
-                bullets.remove(i);
-            } else {
-                bullets.get(i).paint(g);
-            }
-        }
-
-        for (int i = 0; i < explodes.size(); i++) {
-            if (!explodes.get(i).isLive()) {
-                explodes.remove(i);
-            } else {
-                explodes.get(i).paint(g);
-            }
-        }
+//        for (int i = 0; i < tanks.size(); i++) {
+//            if (!tanks.get(i).isLive()) {
+//                tanks.remove(i);
+//            } else {
+//                tanks.get(i).paint(g);
+//            }
+//        }
+//
+//        for (int i = 0; i < bullets.size(); i++) {
+//            for (int j = 0; j < tanks.size(); j++) {
+//                bullets.get(i).collidesWithTank(tanks.get(j));
+//            }
+//
+//            if (!bullets.get(i).isLive()) {
+//                bullets.remove(i);
+//            } else {
+//                bullets.get(i).paint(g);
+//            }
+//        }
+//
+//        for (int i = 0; i < explodes.size(); i++) {
+//            if (!explodes.get(i).isLive()) {
+//                explodes.remove(i);
+//            } else {
+//                explodes.get(i).paint(g);
+//            }
+//        }
     }
 
     // 闪烁过快，使用双缓冲
@@ -108,10 +110,6 @@ public class TankFrame extends Frame {
         paint(gOffScreen);
         // g是显卡的画笔，把offScreenImage一次性画出
         g.drawImage(offScreenImage, 0, 0, null);
-    }
-
-    public void add(Explode explode) {
-        this.explodes.add(explode);
     }
 
     // 继承KeyAdapter而不是实现KeyListener

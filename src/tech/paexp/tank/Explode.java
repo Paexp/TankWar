@@ -5,7 +5,7 @@ import java.awt.*;
 /**
  * @author expev
  */
-public class Explode {
+public class Explode extends AbstractGameObject{
     private int x, y;
     private int width, height;
     private int step = 0;
@@ -35,6 +35,7 @@ public class Explode {
 //        }.start();
     }
 
+    @Override
     public void paint(Graphics g) {
         if (!live) {
             return;

@@ -5,7 +5,7 @@ import java.awt.*;
 /**
  * @author expev
  */
-public class Bullet {
+public class Bullet extends AbstractGameObject{
     public static final int SPEED = 6;
     private int x, y;
     private Dir dir;
@@ -19,6 +19,7 @@ public class Bullet {
         this.group = group;
     }
 
+    @Override
     public void paint(Graphics g) {
         switch (dir) {
             case L:

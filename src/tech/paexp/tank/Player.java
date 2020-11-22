@@ -1,7 +1,6 @@
 package tech.paexp.tank;
 
 import tech.paexp.tank.strategy.FireStrategy;
-import tech.paexp.tank.strategy.LeftRightFireStrategy;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -10,7 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * @author expev
  */
-public class Player {
+public class Player extends AbstractGameObject{
     public static final int SPEED = 5;
     private int x, y;
     private Dir dir;
@@ -68,6 +67,7 @@ public class Player {
         this.y = y;
     }
 
+    @Override
     public void paint(Graphics g) {
         if (!this.isLive()) {
             return;

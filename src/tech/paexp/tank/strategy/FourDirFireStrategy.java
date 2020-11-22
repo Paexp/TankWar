@@ -2,6 +2,9 @@ package tech.paexp.tank.strategy;
 
 import tech.paexp.tank.*;
 
+/**
+ * @author expev
+ */
 public class FourDirFireStrategy implements FireStrategy{
     @Override
     public void fire(Player player) {

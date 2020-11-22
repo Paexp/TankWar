@@ -1,6 +1,7 @@
 #key-value pair
 #xml yaml
-initTankCount=1
+initTankCount=5
 
 #tank fire strategy
 tankFireStrategy=FourDirFireStrategy
+colliders=BulletTankCollider,BulletWallCollider,TankWallCollider

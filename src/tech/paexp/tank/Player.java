@@ -17,6 +17,7 @@ public class Player extends AbstractGameObject{
     private boolean moving = false;
     private Group group;
     private boolean live = true;
+    private FireStrategy strategy = null;
 
     public Player(int x, int y, Dir dir, Group group) {
         this.x = x;
@@ -186,8 +187,6 @@ public class Player extends AbstractGameObject{
         setMainDir();
     }
 
-    private FireStrategy strategy = null;
-
     private void initFireStrategy() {
         // 多态
 //        ClassLoader loader = Player.class.getClassLoader();
@@ -195,7 +194,7 @@ public class Player extends AbstractGameObject{
         try {
 //            Class clazz = loader.loadClass("tech.paexp.tank.strategy." + className);
             Class clazz = Class.forName("tech.paexp.tank.strategy." + className);
-            strategy = (FireStrategy) clazz.getDeclaredConstructor().newInstance();
+            strategy = (FireStrategy) clazz.getConstructor().newInstance();
         } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }

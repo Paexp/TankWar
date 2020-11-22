@@ -6,7 +6,7 @@ import java.util.Random;
 /**
  * @author expev
  */
-public class Tank extends AbstractGameObject{
+public class Tank extends AbstractGameObject {
     public static final int SPEED = 5;
     private int x, y;
     private Dir dir;
@@ -16,6 +16,8 @@ public class Tank extends AbstractGameObject{
     private int width, height;
 
     private int oldX, oldY;
+    private Rectangle rectangle;
+    private Random r = new Random();
 
     public Tank(int x, int y, Dir dir, Group group) {
         this.x = x;
@@ -26,6 +28,7 @@ public class Tank extends AbstractGameObject{
         oldY = y;
         this.width = ResourceMgr.goodTankU.getWidth();
         this.height = ResourceMgr.goodTankU.getHeight();
+        this.rectangle = new Rectangle(x, y, width, height);
     }
 
     public Group getGroup() {
@@ -85,6 +88,8 @@ public class Tank extends AbstractGameObject{
         }
 
         move();
+        rectangle.x = x;
+        rectangle.y = y;
     }
 
     private void move() {
@@ -121,8 +126,6 @@ public class Tank extends AbstractGameObject{
         }
     }
 
-    private Random r = new Random();
-
     private void randomDir() {
         if (r.nextInt(100) > 95) {
             this.dir = Dir.randomDir();
@@ -135,7 +138,7 @@ public class Tank extends AbstractGameObject{
         }
     }
 
-    private void back() {
+    public void back() {
         this.x = oldX;
         this.y = oldY;
     }
@@ -149,5 +152,9 @@ public class Tank extends AbstractGameObject{
     public void die() {
         this.setLive(false);
         TankFrame.INSTANCE.add(new Explode(x, y));
+    }
+
+    public Rectangle getRect() {
+        return rectangle;
     }
 }

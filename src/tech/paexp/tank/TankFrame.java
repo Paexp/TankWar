@@ -1,13 +1,10 @@
 package tech.paexp.tank;
 
-import tech.paexp.tank.chainofresponsibility.BulletTankCollider;
-import tech.paexp.tank.chainofresponsibility.BulletWallCollider;
-import tech.paexp.tank.chainofresponsibility.Collider;
+import tech.paexp.tank.chainofresponsibility.ColliderChain;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.sql.BatchUpdateException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,12 +13,14 @@ import java.util.List;
  */
 public class TankFrame extends Frame {
     public static final TankFrame INSTANCE = new TankFrame();
-
-    private Player myTank;
+    public static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
+    ColliderChain chain = new ColliderChain();
 
     List<AbstractGameObject> objects;
+    // 闪烁过快，使用双缓冲
+    Image offScreenImage = null;
+    private Player myTank;
 
-    public static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
 
     private TankFrame() {
         this.setTitle("tank war");
@@ -30,8 +29,8 @@ public class TankFrame extends Frame {
 
         // 添加键盘(key)监听器
         this.addKeyListener(new TankKeyListener());
-        initGameObject();
 
+        initGameObject();
     }
 
     private void initGameObject() {
@@ -51,9 +50,6 @@ public class TankFrame extends Frame {
     public void add(AbstractGameObject go) {
         objects.add(go);
     }
-
-    Collider collider = new BulletTankCollider();
-    Collider collider2 = new BulletWallCollider();
 
     @Override
     public void paint(Graphics g) {
@@ -75,45 +71,14 @@ public class TankFrame extends Frame {
             AbstractGameObject gameObject1 = objects.get(i);
             for (int j = 0; j < objects.size(); j++) {
                 AbstractGameObject gameObject2 = objects.get(j);
-                collider.collide(gameObject1, gameObject2);
-                collider2.collide(gameObject1, gameObject2);
+                chain.collide(gameObject1, gameObject2);
             }
 
             if (objects.get(i).isLive()) {
                 objects.get(i).paint(g);
             }
         }
-//        for (int i = 0; i < tanks.size(); i++) {
-//            if (!tanks.get(i).isLive()) {
-//                tanks.remove(i);
-//            } else {
-//                tanks.get(i).paint(g);
-//            }
-//        }
-//
-//        for (int i = 0; i < bullets.size(); i++) {
-//            for (int j = 0; j < tanks.size(); j++) {
-//                bullets.get(i).collidesWithTank(tanks.get(j));
-//            }
-//
-//            if (!bullets.get(i).isLive()) {
-//                bullets.remove(i);
-//            } else {
-//                bullets.get(i).paint(g);
-//            }
-//        }
-//
-//        for (int i = 0; i < explodes.size(); i++) {
-//            if (!explodes.get(i).isLive()) {
-//                explodes.remove(i);
-//            } else {
-//                explodes.get(i).paint(g);
-//            }
-//        }
     }
-
-    // 闪烁过快，使用双缓冲
-    Image offScreenImage = null;
 
     @Override
     public void update(Graphics g) {

@@ -1,7 +1,6 @@
 package tech.paexp.tank;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 
 /**
  * @author expev
@@ -51,90 +50,24 @@ public class Tank {
             return;
         }
 
-        if (this.group == Group.GOOD) {
-            switch (dir) {
-                case L:
-                    g.drawImage(ResourceMgr.goodTankL, x, y, null);
-                    break;
-                case U:
-                    g.drawImage(ResourceMgr.goodTankU, x, y, null);
-                    break;
-                case R:
-                    g.drawImage(ResourceMgr.goodTankR, x, y, null);
-                    break;
-                case D:
-                    g.drawImage(ResourceMgr.goodTankD, x, y, null);
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        if (this.group == Group.BAD) {
-            switch (dir) {
-                case L:
-                    g.drawImage(ResourceMgr.badTankL, x, y, null);
-                    break;
-                case U:
-                    g.drawImage(ResourceMgr.badTankU, x, y, null);
-                    break;
-                case R:
-                    g.drawImage(ResourceMgr.badTankR, x, y, null);
-                    break;
-                case D:
-                    g.drawImage(ResourceMgr.badTankD, x, y, null);
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        move();
-    }
-
-    public void keyPressed(KeyEvent e) {
-        // 根据不同的方向键，移动
-        int key = e.getKeyCode();
-        switch (key) {
-            case KeyEvent.VK_LEFT:
-                bL = true;
+        switch (dir) {
+            case L:
+                g.drawImage(ResourceMgr.badTankL, x, y, null);
                 break;
-            case KeyEvent.VK_UP:
-                bU = true;
+            case U:
+                g.drawImage(ResourceMgr.badTankU, x, y, null);
                 break;
-            case KeyEvent.VK_RIGHT:
-                bR = true;
+            case R:
+                g.drawImage(ResourceMgr.badTankR, x, y, null);
                 break;
-            case KeyEvent.VK_DOWN:
-                bD = true;
+            case D:
+                g.drawImage(ResourceMgr.badTankD, x, y, null);
                 break;
             default:
                 break;
         }
-        setMainDir();
-    }
 
-    private void setMainDir() {
-        // all dir keys are released, tank should be stop.
-        if (!bL && !bU && !bR && !bD) {
-            moving = false;
-        } else {
-            // any dir key is pressed, tank should be moving.
-            moving = true;
-
-            if (bL && !bU && !bR && !bD) {
-                dir = Dir.L;
-            }
-            if (!bL && bU && !bR && !bD) {
-                dir = Dir.U;
-            }
-            if (!bL && !bU && bR && !bD) {
-                dir = Dir.R;
-            }
-            if (!bL && !bU && !bR && bD) {
-                dir = Dir.D;
-            }
-        }
+        move();
     }
 
     private void move() {
@@ -157,31 +90,7 @@ public class Tank {
             default:
                 break;
         }
-    }
 
-    public void keyReleased(KeyEvent e) {
-        int key = e.getKeyCode();
-        switch (key) {
-            case KeyEvent.VK_LEFT:
-                bL = false;
-                break;
-            case KeyEvent.VK_UP:
-                bU = false;
-                break;
-            case KeyEvent.VK_RIGHT:
-                bR = false;
-                break;
-            case KeyEvent.VK_DOWN:
-                bD = false;
-                break;
-            case KeyEvent.VK_CONTROL:
-                fire();
-                break;
-            default:
-                break;
-        }
-
-        setMainDir();
     }
 
     private void fire() {

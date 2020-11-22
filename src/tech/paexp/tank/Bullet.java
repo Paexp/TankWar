@@ -2,6 +2,9 @@ package tech.paexp.tank;
 
 import java.awt.*;
 
+/**
+ * @author expev
+ */
 public class Bullet {
     public static final int SPEED = 6;
     private int x, y;

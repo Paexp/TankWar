@@ -9,7 +9,7 @@ import java.util.List;
 public class TankFrame extends Frame {
     public static final TankFrame INSTANCE = new TankFrame();
 
-    private Tank myTank;
+    private Player myTank;
     private Tank enemy;
 
     private List<Bullet> bullets;
@@ -24,7 +24,7 @@ public class TankFrame extends Frame {
         // 添加键盘(key)监听器
         this.addKeyListener(new TankKeyListener());
 
-        myTank = new Tank(100, 100, Dir.R, Group.GOOD);
+        myTank = new Player(100, 100, Dir.R, Group.GOOD);
         enemy = new Tank(200, 200, Dir.D, Group.BAD);
 
         bullets = new ArrayList<>();

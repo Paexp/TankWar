@@ -62,7 +62,10 @@ public class Bullet {
     }
 
     public void collidesWithTank(Tank tank) {
-        if (!tank.isLive()) {
+        if (!this.isLive() || !tank.isLive()) {
+            return;
+        }
+        if (this.group == tank.getGroup()) {
             return;
         }
 
@@ -83,7 +86,7 @@ public class Bullet {
         }
     }
 
-    public void die(){
+    public void die() {
         this.setLive(false);
     }
 

@@ -1,6 +1,7 @@
 package tech.paexp.tank;
 
 import java.awt.*;
+import java.util.Random;
 
 /**
  * @author expev
@@ -10,14 +11,29 @@ public class Tank {
     private int x, y;
     private Dir dir;
     private boolean bL, bU, bR, bD;
-    private boolean moving = false;
+    private boolean moving = true;
     private Group group;
     private boolean live = true;
+    private int width, height;
+
+    private int oldX, oldY;
 
     public Tank(int x, int y, Dir dir, Group group) {
         this.x = x;
         this.y = y;
         this.dir = dir;
+        this.group = group;
+        oldX = x;
+        oldY = y;
+        this.width = ResourceMgr.goodTankU.getWidth();
+        this.height = ResourceMgr.goodTankU.getHeight();
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
         this.group = group;
     }
 
@@ -74,6 +90,10 @@ public class Tank {
         if (!moving) {
             return;
         }
+
+        oldX = x;
+        oldY = y;
+
         switch (dir) {
             case L:
                 x -= SPEED;
@@ -91,6 +111,32 @@ public class Tank {
                 break;
         }
 
+        boundsCheck();
+
+        randomDir();
+
+        if (r.nextInt(100) > 95) {
+            fire();
+        }
+    }
+
+    private Random r = new Random();
+
+    private void randomDir() {
+        if (r.nextInt(100) > 95) {
+            this.dir = Dir.randomDir();
+        }
+    }
+
+    private void boundsCheck() {
+        if (x < 0 || y < 30 || x + width > TankFrame.GAME_WIDTH || y + height > TankFrame.GAME_HEIGHT) {
+            this.back();
+        }
+    }
+
+    private void back() {
+        this.x = oldX;
+        this.y = oldY;
     }
 
     private void fire() {

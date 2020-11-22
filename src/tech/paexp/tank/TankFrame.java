@@ -6,11 +6,13 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author expev
+ */
 public class TankFrame extends Frame {
     public static final TankFrame INSTANCE = new TankFrame();
 
     private Player myTank;
-    Explode explode = new Explode(150, 150);
 
     private List<Explode> explodes;
     private List<Bullet> bullets;
@@ -37,7 +39,7 @@ public class TankFrame extends Frame {
         tanks = new ArrayList<>();
         explodes = new ArrayList<>();
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 1; i++) {
             tanks.add(new Tank(100 + 50 * i, 200, Dir.D, Group.BAD));
         }
     }
@@ -58,7 +60,7 @@ public class TankFrame extends Frame {
 
         myTank.paint(g);
         for (int i = 0; i < tanks.size(); i++) {
-            if (!tanks.get(i).isLive()){
+            if (!tanks.get(i).isLive()) {
                 tanks.remove(i);
             } else {
                 tanks.get(i).paint(g);
@@ -66,8 +68,8 @@ public class TankFrame extends Frame {
         }
 
         for (int i = 0; i < bullets.size(); i++) {
-            for (int j = 0; j < tanks.size(); j++) {
-                bullets.get(i).collidesWithTank(tanks.get(j));
+            for (Tank tank : tanks) {
+                bullets.get(i).collidesWithTank(tank);
             }
 
             if (!bullets.get(i).isLive()) {
@@ -78,7 +80,7 @@ public class TankFrame extends Frame {
         }
 
         for (int i = 0; i < explodes.size(); i++) {
-            if (!explodes.get(i).isLive()){
+            if (!explodes.get(i).isLive()) {
                 explodes.remove(i);
             } else {
                 explodes.get(i).paint(g);

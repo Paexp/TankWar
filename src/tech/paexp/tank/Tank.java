@@ -115,9 +115,9 @@ public class Tank {
 
         randomDir();
 
-        if (r.nextInt(100) > 95) {
-            fire();
-        }
+//        if (r.nextInt(100) > 95) {
+//            fire();
+//        }
     }
 
     private Random r = new Random();

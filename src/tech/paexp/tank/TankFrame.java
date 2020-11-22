@@ -10,8 +10,9 @@ public class TankFrame extends Frame {
     public static final TankFrame INSTANCE = new TankFrame();
 
     private Player myTank;
+    Explode explode = new Explode(150, 150);
 
-
+    private List<Explode> explodes;
     private List<Bullet> bullets;
     private List<Tank> tanks;
 
@@ -34,6 +35,7 @@ public class TankFrame extends Frame {
 
         bullets = new ArrayList<>();
         tanks = new ArrayList<>();
+        explodes = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
             tanks.add(new Tank(100 + 50 * i, 200, Dir.D, Group.BAD));
@@ -51,6 +53,7 @@ public class TankFrame extends Frame {
         g.setColor(Color.WHITE);
         g.drawString("Bullets:" + bullets.size(), 10, 50);
         g.drawString("enemies:" + tanks.size(), 10, 70);
+        g.drawString("explodes:" + explodes.size(), 10, 90);
         g.setColor(c);
 
         myTank.paint(g);
@@ -73,6 +76,14 @@ public class TankFrame extends Frame {
                 bullets.get(i).paint(g);
             }
         }
+
+        for (int i = 0; i < explodes.size(); i++) {
+            if (!explodes.get(i).isLive()){
+                explodes.remove(i);
+            } else {
+                explodes.get(i).paint(g);
+            }
+        }
     }
 
     // 闪烁过快，使用双缓冲
@@ -93,6 +104,10 @@ public class TankFrame extends Frame {
         paint(gOffScreen);
         // g是显卡的画笔，把offScreenImage一次性画出
         g.drawImage(offScreenImage, 0, 0, null);
+    }
+
+    public void add(Explode explode) {
+        this.explodes.add(explode);
     }
 
     // 继承KeyAdapter而不是实现KeyListener

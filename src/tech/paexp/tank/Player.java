@@ -1,7 +1,11 @@
 package tech.paexp.tank;
 
+import tech.paexp.tank.strategy.FireStrategy;
+import tech.paexp.tank.strategy.LeftRightFireStrategy;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * @author expev
@@ -19,6 +23,24 @@ public class Player {
         this.x = x;
         this.y = y;
         this.dir = dir;
+        this.group = group;
+        //init fire strategy from config file
+        this.initFireStrategy();
+    }
+
+    public Dir getDir() {
+        return dir;
+    }
+
+    public void setDir(Dir dir) {
+        this.dir = dir;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
         this.group = group;
     }
 
@@ -163,13 +185,22 @@ public class Player {
         setMainDir();
     }
 
-    private void fire() {
-        int bX = x + ResourceMgr.goodTankU.getWidth() / 2 - ResourceMgr.bulletU.getWidth() / 2;
-        int bY = y + ResourceMgr.goodTankU.getHeight() / 2 - ResourceMgr.bulletU.getHeight() / 2;
-        TankFrame.INSTANCE.add(new Bullet(bX, bY, dir, group));
+    private FireStrategy strategy = null;
+
+    private void initFireStrategy() {
+        // 多态
+//        ClassLoader loader = Player.class.getClassLoader();
+        String className = PropertyMgr.get("tankFireStrategy");
+        try {
+//            Class clazz = loader.loadClass("tech.paexp.tank.strategy." + className);
+            Class clazz = Class.forName("tech.paexp.tank.strategy." + className);
+            strategy = (FireStrategy) clazz.getDeclaredConstructor().newInstance();
+        } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void die() {
-        this.setLive(false);
+    private void fire() {
+        strategy.fire(this);
     }
 }

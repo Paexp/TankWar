@@ -39,7 +39,9 @@ public class TankFrame extends Frame {
         tanks = new ArrayList<>();
         explodes = new ArrayList<>();
 
-        for (int i = 0; i < 1; i++) {
+        int tankCount = Integer.parseInt(PropertyMgr.get("initTankCount"));
+
+        for (int i = 0; i < tankCount; i++) {
             tanks.add(new Tank(100 + 50 * i, 200, Dir.D, Group.BAD));
         }
     }
@@ -68,8 +70,8 @@ public class TankFrame extends Frame {
         }
 
         for (int i = 0; i < bullets.size(); i++) {
-            for (Tank tank : tanks) {
-                bullets.get(i).collidesWithTank(tank);
+            for (int j = 0; j < tanks.size(); j++) {
+                bullets.get(i).collidesWithTank(tanks.get(j));
             }
 
             if (!bullets.get(i).isLive()) {
@@ -125,5 +127,4 @@ public class TankFrame extends Frame {
             myTank.keyReleased(e);
         }
     }
-
 }

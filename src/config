@@ -1,6 +1,6 @@
 #key-value pair
 #xml yaml
-initTankCount=5
+initTankCount=1
 
 #tank fire strategy
-tankFireStrategy=DefaultFireStrategy
+tankFireStrategy=FourDirFireStrategy

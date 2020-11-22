@@ -10,7 +10,6 @@ public class Tank extends AbstractGameObject{
     public static final int SPEED = 5;
     private int x, y;
     private Dir dir;
-    private boolean bL, bU, bR, bD;
     private boolean moving = true;
     private Group group;
     private boolean live = true;
@@ -37,6 +36,7 @@ public class Tank extends AbstractGameObject{
         this.group = group;
     }
 
+    @Override
     public boolean isLive() {
         return live;
     }
@@ -61,6 +61,7 @@ public class Tank extends AbstractGameObject{
         this.y = y;
     }
 
+    @Override
     public void paint(Graphics g) {
         if (!this.isLive()) {
             return;
@@ -115,9 +116,9 @@ public class Tank extends AbstractGameObject{
 
         randomDir();
 
-//        if (r.nextInt(100) > 95) {
-//            fire();
-//        }
+        if (r.nextInt(100) > 95) {
+            fire();
+        }
     }
 
     private Random r = new Random();

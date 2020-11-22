@@ -2,10 +2,14 @@ package tech.paexp.tank;
 
 import java.util.Random;
 
+/**
+ * @author expev
+ */
+
 public enum Dir {
     // public static final tech.paexp.tank.Dir L;
 
-    L, U, R, D, STOP;
+    L, U, R, D;
 
     private static Random r = new Random();
 

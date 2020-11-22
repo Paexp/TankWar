@@ -12,6 +12,7 @@ public class Explode extends AbstractGameObject{
 
     private boolean live = true;
 
+    @Override
     public boolean isLive() {
         return live;
     }

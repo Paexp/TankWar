@@ -1,8 +1,13 @@
 package tech.paexp.tank;
 
+import tech.paexp.tank.chainofresponsibility.BulletTankCollider;
+import tech.paexp.tank.chainofresponsibility.BulletWallCollider;
+import tech.paexp.tank.chainofresponsibility.Collider;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.sql.BatchUpdateException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,24 +49,39 @@ public class TankFrame extends Frame {
     }
 
     public void add(AbstractGameObject go) {
-        //impl?
         objects.add(go);
     }
 
+    Collider collider = new BulletTankCollider();
+    Collider collider2 = new BulletWallCollider();
 
     @Override
     public void paint(Graphics g) {
         // g由系统初始化，可以直接拿来用 --> 一只画笔
         Color c = g.getColor();
         g.setColor(Color.WHITE);
-//        g.drawString("Bullets:" + bullets.size(), 10, 50);
+        g.drawString("Objects:" + objects.size(), 10, 50);
 //        g.drawString("enemies:" + tanks.size(), 10, 70);
 //        g.drawString("explodes:" + explodes.size(), 10, 90);
         g.setColor(c);
 
         myTank.paint(g);
         for (int i = 0; i < objects.size(); i++) {
-            objects.get(i).paint(g);
+            if (!objects.get(i).isLive()) {
+                objects.remove(i);
+                break;
+            }
+
+            AbstractGameObject gameObject1 = objects.get(i);
+            for (int j = 0; j < objects.size(); j++) {
+                AbstractGameObject gameObject2 = objects.get(j);
+                collider.collide(gameObject1, gameObject2);
+                collider2.collide(gameObject1, gameObject2);
+            }
+
+            if (objects.get(i).isLive()) {
+                objects.get(i).paint(g);
+            }
         }
 //        for (int i = 0; i < tanks.size(); i++) {
 //            if (!tanks.get(i).isLive()) {

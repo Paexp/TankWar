@@ -5,18 +5,24 @@ import java.awt.*;
 /**
  * @author expev
  */
-public class Bullet extends AbstractGameObject{
+public class Bullet extends AbstractGameObject {
     public static final int SPEED = 6;
     private int x, y;
     private Dir dir;
     private Group group;
     private boolean live = true;
+    private int w = ResourceMgr.bulletU.getWidth();
+    private int h = ResourceMgr.bulletU.getHeight();
+
+    private Rectangle rectangle;
 
     public Bullet(int x, int y, Dir dir, Group group) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.group = group;
+
+        rectangle = new Rectangle(x, y, w, h);
     }
 
     @Override
@@ -60,6 +66,10 @@ public class Bullet extends AbstractGameObject{
         }
 
         boundsCheck();
+
+        // update the rect
+        rectangle.x = x;
+        rectangle.y = y;
     }
 
     public void collidesWithTank(Tank tank) {
@@ -70,16 +80,19 @@ public class Bullet extends AbstractGameObject{
             return;
         }
 
-        Rectangle rectBullet = new Rectangle(x, y, ResourceMgr.bulletU.getWidth(),
-                ResourceMgr.badTankU.getHeight());
+//        Rectangle rectBullet = new Rectangle(x, y, ResourceMgr.bulletU.getWidth(),
+//                ResourceMgr.bulletU.getHeight());
         Rectangle rectTank = new Rectangle(tank.getX(), tank.getY(), ResourceMgr.goodTankU.getWidth(),
                 ResourceMgr.goodTankU.getHeight());
-        if (rectBullet.intersects(rectTank)) {
+        if (rectangle.intersects(rectTank)) {
             this.die();
             tank.die();
         }
     }
 
+    public Rectangle getRect() {
+        return rectangle;
+    }
 
     private void boundsCheck() {
         if (x < 0 || y < 30 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT) {
@@ -91,11 +104,26 @@ public class Bullet extends AbstractGameObject{
         this.setLive(false);
     }
 
+    @Override
     public boolean isLive() {
         return live;
     }
 
     public void setLive(boolean live) {
         this.live = live;
+    }
+
+    @Override
+    public String toString() {
+        return "Bullet{" +
+                "x=" + x +
+                ", y=" + y +
+                ", dir=" + dir +
+                ", group=" + group +
+                ", live=" + live +
+                ", w=" + w +
+                ", h=" + h +
+                ", rectangle=" + rectangle +
+                '}';
     }
 }

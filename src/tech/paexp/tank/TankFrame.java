@@ -41,7 +41,7 @@ public class TankFrame extends Frame {
         int tankCount = Integer.parseInt(PropertyMgr.get("initTankCount"));
 
         for (int i = 0; i < tankCount; i++) {
-            this.add(new Tank(100 + 50 * i, 200, Dir.D, Group.BAD));
+            this.add(new Tank(100 + 80 * i, 200, Dir.D, Group.BAD));
         }
 
         this.add(new Wall(300, 200, 400, 50));

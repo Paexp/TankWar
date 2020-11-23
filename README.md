@@ -119,3 +119,16 @@
   - 新加进来的游戏物体，如何做无缝结合的碰撞检测
   - 不需要修改原来的代码
 
+4.Model和View分离
+
+- GameModel
+- Facade和Mediator
+
+5.存盘功能（序列化）
+
+- Serializable接口
+
+6.线程
+
+- 复习与补充
+

@@ -5,18 +5,17 @@ import tech.paexp.tank.chainofresponsibility.ColliderChain;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author expev
  */
-public class GameModel {
-    private Player myTank;
-
+public class GameModel implements Serializable {
     ColliderChain chain = new ColliderChain();
-
     List<AbstractGameObject> objects;
+    private Player myTank;
 
     public GameModel() {
         initGameObject();
@@ -70,6 +69,10 @@ public class GameModel {
         }
     }
 
+    public Player getMyTank() {
+        return myTank;
+    }
+
     public class TankKeyListener extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
@@ -80,9 +83,5 @@ public class GameModel {
         public void keyReleased(KeyEvent e) {
             myTank.keyReleased(e);
         }
-    }
-
-    public Player getMyTank() {
-        return myTank;
     }
 }

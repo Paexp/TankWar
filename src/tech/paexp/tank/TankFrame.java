@@ -3,6 +3,7 @@ package tech.paexp.tank;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.*;
 
 /**
  * @author expev
@@ -48,21 +49,64 @@ public class TankFrame extends Frame {
         g.drawImage(offScreenImage, 0, 0, null);
     }
 
+    private void save() {
+        ObjectOutputStream objectOutputStream = null;
+        try {
+            File file = new File("C:\\Users\\expev\\Desktop\\test/tankwar.dat");
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            objectOutputStream.writeObject(gameModel);
+            objectOutputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                if (objectOutputStream != null) {
+                    objectOutputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void load() {
+        try {
+            File file = new File("C:\\Users\\expev\\Desktop\\test/tankwar.dat");
+            FileInputStream fileInputStream = new FileInputStream(file);
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+            this.gameModel  = (GameModel) objectInputStream.readObject();
+            objectInputStream.close();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public GameModel getGameModel() {
+        return this.gameModel;
+    }
+
     // 继承KeyAdapter而不是实现KeyListener
     private class TankKeyListener extends KeyAdapter {
 
         @Override
         public void keyPressed(KeyEvent e) {
-            gameModel.getMyTank().keyPressed(e);
+            int key = e.getKeyCode();
+            if (key == KeyEvent.VK_S) {
+                //存盘
+                save();
+            }else if(key == KeyEvent.VK_L) {
+                // 读取
+                load();
+            }
+            else {
+                gameModel.getMyTank().keyPressed(e);
+            }
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
             gameModel.getMyTank().keyReleased(e);
         }
-    }
-
-    public GameModel getGameModel() {
-        return this.gameModel;
     }
 }

@@ -31,7 +31,8 @@ public class SerializeTest {
             T t = (T) objectInputStream.readObject();
 
             Assertions.assertEquals(4, t.m);
-            Assertions.assertEquals(8, t.n);
+            Assertions.assertEquals(0, t.n);
+            Assertions.assertEquals(3, t.apple.weight);
 
             objectInputStream.close();
 
@@ -45,4 +46,11 @@ class T implements Serializable {
     int m = 4;
     // transient（透明的） 修饰的成员变量不参与序列化
     transient int n = 8;
+    // 包含引用 则引用的类也需要序列化
+    Apple apple = new Apple();
+}
+
+class Apple implements Serializable {
+    int weight = 3;
+
 }

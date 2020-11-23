@@ -72,24 +72,6 @@ public class Bullet extends AbstractGameObject {
         rectangle.y = y;
     }
 
-    public void collidesWithTank(Tank tank) {
-        if (!this.isLive() || !tank.isLive()) {
-            return;
-        }
-        if (this.group == tank.getGroup()) {
-            return;
-        }
-
-//        Rectangle rectBullet = new Rectangle(x, y, ResourceMgr.bulletU.getWidth(),
-//                ResourceMgr.bulletU.getHeight());
-        Rectangle rectTank = new Rectangle(tank.getX(), tank.getY(), ResourceMgr.goodTankU.getWidth(),
-                ResourceMgr.goodTankU.getHeight());
-        if (rectangle.intersects(rectTank)) {
-            this.die();
-            tank.die();
-        }
-    }
-
     public Rectangle getRect() {
         return rectangle;
     }

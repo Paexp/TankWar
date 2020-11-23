@@ -1,26 +1,21 @@
 package tech.paexp.tank;
 
-import tech.paexp.tank.chainofresponsibility.ColliderChain;
-
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author expev
  */
 public class TankFrame extends Frame {
     public static final TankFrame INSTANCE = new TankFrame();
-    public static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
-    ColliderChain chain = new ColliderChain();
 
-    List<AbstractGameObject> objects;
+    public static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
+
     // 闪烁过快，使用双缓冲
     Image offScreenImage = null;
-    private Player myTank;
 
+    private GameModel gameModel = new GameModel();
 
     private TankFrame() {
         this.setTitle("tank war");
@@ -29,55 +24,11 @@ public class TankFrame extends Frame {
 
         // 添加键盘(key)监听器
         this.addKeyListener(new TankKeyListener());
-
-        initGameObject();
-    }
-
-    private void initGameObject() {
-        myTank = new Player(100, 100, Dir.R, Group.GOOD);
-
-        objects = new ArrayList<>();
-
-        int tankCount = Integer.parseInt(PropertyMgr.get("initTankCount"));
-
-        for (int i = 0; i < tankCount; i++) {
-            this.add(new Tank(100 + 80 * i, 200, Dir.D, Group.BAD));
-        }
-
-        this.add(new Wall(300, 200, 400, 50));
-    }
-
-    public void add(AbstractGameObject go) {
-        objects.add(go);
     }
 
     @Override
     public void paint(Graphics g) {
-        // g由系统初始化，可以直接拿来用 --> 一只画笔
-        Color c = g.getColor();
-        g.setColor(Color.WHITE);
-        g.drawString("Objects:" + objects.size(), 10, 50);
-//        g.drawString("enemies:" + tanks.size(), 10, 70);
-//        g.drawString("explodes:" + explodes.size(), 10, 90);
-        g.setColor(c);
-
-        myTank.paint(g);
-        for (int i = 0; i < objects.size(); i++) {
-            if (!objects.get(i).isLive()) {
-                objects.remove(i);
-                break;
-            }
-
-            AbstractGameObject gameObject1 = objects.get(i);
-            for (int j = 0; j < objects.size(); j++) {
-                AbstractGameObject gameObject2 = objects.get(j);
-                chain.collide(gameObject1, gameObject2);
-            }
-
-            if (objects.get(i).isLive()) {
-                objects.get(i).paint(g);
-            }
-        }
+        gameModel.paint(g);
     }
 
     @Override
@@ -102,12 +53,16 @@ public class TankFrame extends Frame {
 
         @Override
         public void keyPressed(KeyEvent e) {
-            myTank.keyPressed(e);
+            gameModel.getMyTank().keyPressed(e);
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
-            myTank.keyReleased(e);
+            gameModel.getMyTank().keyReleased(e);
         }
+    }
+
+    public GameModel getGameModel() {
+        return this.gameModel;
     }
 }

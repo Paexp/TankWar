@@ -119,16 +119,21 @@
   - 新加进来的游戏物体，如何做无缝结合的碰撞检测
   - 不需要修改原来的代码
 
-4.Model和View分离
+4.Model和View分离（MVC）
+
+- Model：内容		View：展现形式
+
+5.坦克 Model View
 
 - GameModel
-- Facade和Mediator
+- Facade（**门面模式**）通过门面与多个内部物体打交道
+- Mediator（**调停者模式**）内部多个物体只与调停者打交道
 
-5.存盘功能（序列化）
+6.存盘功能（序列化）
 
 - Serializable接口
 
-6.线程
+7.线程
 
 - 复习与补充
 

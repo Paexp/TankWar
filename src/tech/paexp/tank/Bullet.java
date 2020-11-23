@@ -7,12 +7,13 @@ import java.awt.*;
  */
 public class Bullet extends AbstractGameObject {
     public static final int SPEED = 6;
+    public static final int W = ResourceMgr.bulletU.getWidth();
+    public static final int H = ResourceMgr.bulletU.getHeight();
+
     private int x, y;
     private Dir dir;
     private Group group;
     private boolean live = true;
-    private int w = ResourceMgr.bulletU.getWidth();
-    private int h = ResourceMgr.bulletU.getHeight();
 
     private Rectangle rectangle;
 
@@ -22,7 +23,7 @@ public class Bullet extends AbstractGameObject {
         this.dir = dir;
         this.group = group;
 
-        rectangle = new Rectangle(x, y, w, h);
+        rectangle = new Rectangle(x, y, W, H);
     }
 
     @Override
@@ -111,8 +112,6 @@ public class Bullet extends AbstractGameObject {
                 ", dir=" + dir +
                 ", group=" + group +
                 ", live=" + live +
-                ", w=" + w +
-                ", h=" + h +
                 ", rectangle=" + rectangle +
                 '}';
     }

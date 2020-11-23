@@ -55,7 +55,9 @@ public class GameModel {
                 objects.remove(i);
                 break;
             }
+        }
 
+        for (int i = 0; i < objects.size(); i++) {
             AbstractGameObject gameObject1 = objects.get(i);
             for (int j = 0; j < objects.size(); j++) {
                 AbstractGameObject gameObject2 = objects.get(j);

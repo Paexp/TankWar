@@ -28,12 +28,12 @@ public class Explode extends AbstractGameObject{
         this.width = ResourceMgr.explodes[0].getWidth();
         this.height = ResourceMgr.explodes[0].getHeight();
 
-//        new Thread() {
-//            @Override
-//            public void run() {
-//                new Audio("audio/explode.wav").play();
-//            }
-//        }.start();
+        new Thread() {
+            @Override
+            public void run() {
+                new Audio("audio/explode.wav").play();
+            }
+        }.start();
     }
 
     @Override

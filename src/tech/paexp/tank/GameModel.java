@@ -43,7 +43,7 @@ public class GameModel implements Serializable {
         // g由系统初始化，可以直接拿来用 --> 一只画笔
         Color c = g.getColor();
         g.setColor(Color.WHITE);
-        g.drawString("Objects:" + objects.size(), 10, 50);
+//        g.drawString("Objects:" + objects.size(), 10, 50);
 //        g.drawString("enemies:" + tanks.size(), 10, 70);
 //        g.drawString("explodes:" + explodes.size(), 10, 90);
         g.setColor(c);

@@ -135,5 +135,38 @@
 
 7.线程
 
-- 复习与补充
+- 复习与补充（线程的三种实现方式）
 
+## Part 3 网络版（Netty）
+
+1.写一个基于netty的聊天室
+
+- client UI不重要
+- server上的客户端通道需要保存
+- netty中的ByteBuf不是位于JVM内部而是在操作系统上的，因此无法被JVM垃圾回收，采用引用计数法（Reference Count）由netty进行垃圾回收。可以用buf.refcnt()拿到引用数。
+
+2.server关闭流程
+
+- 通知客户端，我要准备关闭，你要准备好
+- 拒绝新的连接
+- 等几分钟，看到的客户端处理完成
+- 开始关闭流程，迭代发送关闭信息，客户端收到关闭信息进行自动处理（服务器连接已经断开）
+- 确认所有客户端断开
+- server保存现有的工作数据
+- 停止线程组
+- 退出
+
+3.Encoder Decoder（一个消息如何从client到server）
+
+- 把消息转为字符串数组：Encoder
+- 把字符串数组转为消息：Decoder
+- 方式一："30,20".getBytes()
+- 方式二：30：[0101 .. 1001] 20：[1010 ... 1010] 8 bytes send to server
+- 第二种方式更好。原因：字符串长度不固定，编码不固定，语言不固定，转字符串效率比较低，内存copy不用转，直接copy
+- 编码器与解码器由Netty自动识别调用，不用担心在需要Encoder时会误用Deoder，也不用担心在需要Decoder时会误用。
+- Encoder多种不同的编解码器可以混在一起使用，共同实现程序的业务逻辑
+
+4.Embedded Channel进行单元测试
+
+- Encoder: 往**外**写（writeOutbound），然后读（readOutbound）
+- Decoder: 往**里**写（writeInbound），然后读（readInbound）

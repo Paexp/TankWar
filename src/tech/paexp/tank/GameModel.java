@@ -8,6 +8,8 @@ import java.awt.event.KeyEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 /**
  * @author expev
@@ -16,13 +18,16 @@ public class GameModel implements Serializable {
     ColliderChain chain = new ColliderChain();
     List<AbstractGameObject> objects;
     private Player myTank;
+    Random r = new Random();
 
     public GameModel() {
         initGameObject();
     }
 
     private void initGameObject() {
-        myTank = new Player(100, 100, Dir.R, Group.GOOD);
+
+        myTank = new Player(50 + r.nextInt(700), 50 + r.nextInt(700),
+                Dir.values()[r.nextInt(Dir.values().length)], Group.values()[r.nextInt(Group.values().length)]);
 
         objects = new ArrayList<>();
 
@@ -71,6 +76,18 @@ public class GameModel implements Serializable {
 
     public Player getMyTank() {
         return myTank;
+    }
+
+    public Tank findTankByUUID(UUID id) {
+        for (AbstractGameObject o : objects) {
+            if (o instanceof Tank) {
+                Tank t = (Tank) o;
+                if (id.equals(t.getId())) {
+                    return t;
+                }
+            }
+        }
+        return null;
     }
 
     public class TankKeyListener extends KeyAdapter {

@@ -17,9 +17,7 @@ public class Tank extends AbstractGameObject {
     private Group group;
     private boolean live = true;
     private int width, height;
-
     private UUID id;
-
     private int oldX, oldY;
     private Rectangle rectangle;
     private Random r = new Random();
@@ -47,8 +45,16 @@ public class Tank extends AbstractGameObject {
         this.rectangle = new Rectangle(x, y, width, height);
     }
 
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
+
     public Dir getDir() {
         return dir;
+    }
+
+    public void setDir(Dir dir) {
+        this.dir = dir;
     }
 
     public UUID getId() {
@@ -96,16 +102,16 @@ public class Tank extends AbstractGameObject {
 
         switch (dir) {
             case L:
-                g.drawImage(this.group.equals(Group.BAD) ? ResourceMgr.badTankL: ResourceMgr.goodTankL, x, y, null);
+                g.drawImage(this.group.equals(Group.BAD) ? ResourceMgr.badTankL : ResourceMgr.goodTankL, x, y, null);
                 break;
             case U:
-                g.drawImage(this.group.equals(Group.BAD) ? ResourceMgr.badTankU: ResourceMgr.goodTankU, x, y, null);
+                g.drawImage(this.group.equals(Group.BAD) ? ResourceMgr.badTankU : ResourceMgr.goodTankU, x, y, null);
                 break;
             case R:
-                g.drawImage(this.group.equals(Group.BAD) ? ResourceMgr.badTankR: ResourceMgr.goodTankR, x, y, null);
+                g.drawImage(this.group.equals(Group.BAD) ? ResourceMgr.badTankR : ResourceMgr.goodTankR, x, y, null);
                 break;
             case D:
-                g.drawImage(this.group.equals(Group.BAD) ? ResourceMgr.badTankD: ResourceMgr.goodTankD, x, y, null);
+                g.drawImage(this.group.equals(Group.BAD) ? ResourceMgr.badTankD : ResourceMgr.goodTankD, x, y, null);
                 break;
             default:
                 break;
@@ -143,11 +149,11 @@ public class Tank extends AbstractGameObject {
 
         boundsCheck();
 
-        randomDir();
+        //randomDir();
 
-        if (r.nextInt(100) > 95) {
-            fire();
-        }
+//        if (r.nextInt(100) > 95) {
+//            fire();
+//        }
     }
 
     private void randomDir() {

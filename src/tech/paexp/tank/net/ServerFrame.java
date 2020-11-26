@@ -4,6 +4,9 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+/**
+ * @author expev
+ */
 public class ServerFrame extends Frame {
     public static final ServerFrame INSTANCE = new ServerFrame();
     private final Server server = new Server();

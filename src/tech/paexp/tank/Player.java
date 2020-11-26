@@ -1,6 +1,8 @@
 package tech.paexp.tank;
 
-import tech.paexp.tank.chainofresponsibility.Collider;
+import tech.paexp.tank.net.Client;
+import tech.paexp.tank.net.TankStartMovingMsg;
+import tech.paexp.tank.net.TankStopMsg;
 import tech.paexp.tank.strategy.FireStrategy;
 
 import java.awt.*;
@@ -134,9 +136,12 @@ public class Player extends AbstractGameObject {
     }
 
     private void setMainDir() {
+        boolean oldMoving = moving;
+
         // all dir keys are released, tank should be stop.
         if (!bL && !bU && !bR && !bD) {
             moving = false;
+            Client.INSTANCE.send(new TankStopMsg(this.id, this.x, this.y));
         } else {
             // any dir key is pressed, tank should be moving.
             moving = true;
@@ -152,6 +157,9 @@ public class Player extends AbstractGameObject {
             }
             if (!bL && !bU && !bR && bD) {
                 dir = Dir.D;
+            }
+            if (!oldMoving) {
+                Client.INSTANCE.send(new TankStartMovingMsg(this.id, this.x, this.y, this.dir));
             }
         }
     }

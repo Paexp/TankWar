@@ -51,7 +51,7 @@ public class Server {
 
         @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) {
-            //ServerFrame.INSTANCE.updateClientMsg(msg.toString());
+            ServerFrame.INSTANCE.updateClientMsg(msg.toString());
             channels.writeAndFlush(msg);
         }
 

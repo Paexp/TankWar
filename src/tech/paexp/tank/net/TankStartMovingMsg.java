@@ -1,6 +1,8 @@
 package tech.paexp.tank.net;
 
-import tech.paexp.tank.*;
+import tech.paexp.tank.Dir;
+import tech.paexp.tank.Tank;
+import tech.paexp.tank.TankFrame;
 
 import java.io.*;
 import java.util.UUID;
@@ -8,26 +10,27 @@ import java.util.UUID;
 /**
  * @author expev
  */
-public class TankJoinMsg extends Msg{
-
+public class TankStartMovingMsg extends Msg {
+    private UUID id;
     private int x, y;
     private Dir dir;
-    private boolean moving;
-    private Group group;
 
-    // self's id
-    private UUID id;
-
-    public TankJoinMsg() {
+    public TankStartMovingMsg(UUID id, int x, int y, Dir dir) {
+        this.id = id;
+        this.x = x;
+        this.y = y;
+        this.dir = dir;
     }
 
-    public TankJoinMsg(Player p) {
-        this.x = p.getX();
-        this.y = p.getY();
-        this.dir = p.getDir();
-        this.moving = p.isMoving();
-        this.group = p.getGroup();
-        this.id = p.getId();
+    public TankStartMovingMsg() {
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public int getX() {
@@ -54,45 +57,8 @@ public class TankJoinMsg extends Msg{
         this.dir = dir;
     }
 
-    public boolean isMoving() {
-        return moving;
-    }
-
-    public void setMoving(boolean moving) {
-        this.moving = moving;
-    }
-
-    public Group getGroup() {
-        return group;
-    }
-
-    public void setGroup(Group group) {
-        this.group = group;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    @Override
-    public String toString() {
-        return "TankJoinMsg{" +
-                "x=" + x +
-                ", y=" + y +
-                ", dir=" + dir +
-                ", moving=" + moving +
-                ", group=" + group +
-                ", id=" + id +
-                '}';
-    }
-
     @Override
     public byte[] toBytes() {
-
         ByteArrayOutputStream byteArrayOutputStream = null;
         DataOutputStream dataOutputStream = null;
         byte[] bytes = null;
@@ -100,16 +66,16 @@ public class TankJoinMsg extends Msg{
         try {
             byteArrayOutputStream = new ByteArrayOutputStream();
             dataOutputStream = new DataOutputStream(byteArrayOutputStream);
+
+            dataOutputStream.writeLong(id.getMostSignificantBits());
+            dataOutputStream.writeLong(id.getLeastSignificantBits());
+
             dataOutputStream.writeInt(x);
             dataOutputStream.writeInt(y);
             dataOutputStream.writeInt(dir.ordinal());
-            dataOutputStream.writeBoolean(moving);
-            dataOutputStream.writeInt(group.ordinal());
-            dataOutputStream.writeLong(id.getMostSignificantBits());
-            dataOutputStream.writeLong(id.getLeastSignificantBits());
+
             dataOutputStream.flush();
             bytes = byteArrayOutputStream.toByteArray();
-
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -138,46 +104,49 @@ public class TankJoinMsg extends Msg{
         DataInputStream dataInputStream = new DataInputStream(new ByteArrayInputStream(bytes));
 
         try {
+            this.id = new UUID(dataInputStream.readLong(), dataInputStream.readLong());
             this.x = dataInputStream.readInt();
             this.y = dataInputStream.readInt();
             this.dir = Dir.values()[dataInputStream.readInt()];
-            this.moving = dataInputStream.readBoolean();
-            this.group = Group.values()[dataInputStream.readInt()];
-            this.id = new UUID(dataInputStream.readLong(), dataInputStream.readLong());
-
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
                 dataInputStream.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-
     }
 
     @Override
     public void handle() {
-        // if this msg's id equals my tank's id return
-        // otherwise add new tank to my collection
         if (this.id.equals(TankFrame.INSTANCE.getGameModel().getMyTank().getId())) {
             return;
         }
 
-        if (TankFrame.INSTANCE.getGameModel().findTankByUUID(this.id) != null) {
-            return;
+        Tank t = TankFrame.INSTANCE.getGameModel().findTankByUUID(this.id);
+
+        if (t != null) {
+            t.setMoving(true);
+            t.setX(this.x);
+            t.setY(this.y);
+            t.setDir(this.dir);
         }
-
-        Tank t = new Tank(this);
-        TankFrame.INSTANCE.getGameModel().add(t);
-
-        Client.INSTANCE.send(new TankJoinMsg(TankFrame.INSTANCE.getGameModel().getMyTank()));
-
     }
 
     @Override
     public MsgType getMsgType() {
-        return MsgType.TankJoin;
+        return MsgType.TankStartMoving;
+    }
+
+    @Override
+    public String toString() {
+        return "TankStartMovingMsg{" +
+                "id=" + id +
+                ", x=" + x +
+                ", y=" + y +
+                ", dir=" + dir +
+                '}';
     }
 }

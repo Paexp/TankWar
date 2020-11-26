@@ -12,10 +12,10 @@ import tech.paexp.tank.TankFrame;
 
 public class Client {
     public static final Client INSTANCE = new Client();
-
-    private Client(){}
-
     private Channel channel = null;
+
+    private Client() {
+    }
 
     public static void main(String[] args) {
         Client c = new Client();
@@ -52,7 +52,7 @@ public class Client {
         }
     }
 
-    public void send(TankJoinMsg msg) {
+    public void send(Msg msg) {
         channel.writeAndFlush(msg);
     }
 
@@ -60,16 +60,16 @@ public class Client {
         channel.close();
     }
 
-    static class MyHandler extends SimpleChannelInboundHandler<TankJoinMsg> {
+    static class MyHandler extends SimpleChannelInboundHandler<Msg> {
         @Override
         public void channelActive(ChannelHandlerContext ctx) {
             ctx.writeAndFlush(new TankJoinMsg(TankFrame.INSTANCE.getGameModel().getMyTank()));
         }
 
         @Override
-        protected void channelRead0(ChannelHandlerContext channelHandlerContext, TankJoinMsg tankJoinMsg) throws Exception {
-            System.out.println(tankJoinMsg);
-            tankJoinMsg.handle();
+        protected void channelRead0(ChannelHandlerContext channelHandlerContext, Msg msg) throws Exception {
+            System.out.println(msg);
+            msg.handle();
         }
 
         @Override

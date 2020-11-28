@@ -10,19 +10,19 @@ import java.util.UUID;
 /**
  * @author expev
  */
-public class TankStartMovingMsg extends Msg {
+public class TankMoveOrDirChangeMsg extends Msg {
     private UUID id;
     private int x, y;
     private Dir dir;
 
-    public TankStartMovingMsg(UUID id, int x, int y, Dir dir) {
+    public TankMoveOrDirChangeMsg(UUID id, int x, int y, Dir dir) {
         this.id = id;
         this.x = x;
         this.y = y;
         this.dir = dir;
     }
 
-    public TankStartMovingMsg() {
+    public TankMoveOrDirChangeMsg() {
     }
 
     public UUID getId() {
@@ -137,12 +137,12 @@ public class TankStartMovingMsg extends Msg {
 
     @Override
     public MsgType getMsgType() {
-        return MsgType.TankStartMoving;
+        return MsgType.TankMoveOrDirChange;
     }
 
     @Override
     public String toString() {
-        return "TankStartMovingMsg{" +
+        return "TankMoveOrDirChangeMsg{" +
                 "id=" + id +
                 ", x=" + x +
                 ", y=" + y +

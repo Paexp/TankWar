@@ -1,6 +1,7 @@
 package tech.paexp.tank;
 
 import java.awt.*;
+import java.util.UUID;
 
 /**
  * @author expev
@@ -14,16 +15,58 @@ public class Bullet extends AbstractGameObject {
     private Dir dir;
     private Group group;
     private boolean live = true;
-
+    private UUID id = UUID.randomUUID();
+    private UUID playerId;
     private Rectangle rectangle;
 
-    public Bullet(int x, int y, Dir dir, Group group) {
+    public Bullet(UUID playerId, int x, int y, Dir dir, Group group) {
+        this.playerId = playerId;
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.group = group;
 
         rectangle = new Rectangle(x, y, W, H);
+    }
+
+    public UUID getPlayerId() {
+        return playerId;
+    }
+
+    public void setPlayerId(UUID playerId) {
+        this.playerId = playerId;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public Dir getDir() {
+        return dir;
+    }
+
+    public void setDir(Dir dir) {
+        this.dir = dir;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     @Override
@@ -82,6 +125,7 @@ public class Bullet extends AbstractGameObject {
             live = false;
         }
     }
+
 
     public void die() {
         this.setLive(false);

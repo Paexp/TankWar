@@ -5,5 +5,5 @@ package tech.paexp.tank.net;
  */
 
 public enum MsgType {
-    TankJoin, TankStartMoving, TankStop
+    TankJoin, TankMoveOrDirChange, TankStop, BulletNew
 }
